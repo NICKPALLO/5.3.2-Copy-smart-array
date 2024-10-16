@@ -7,21 +7,16 @@ class smart_array
 public:
 	smart_array(int a);
 	~smart_array();
+	smart_array(const smart_array& other);
 	void add_element(int value);
 	int get_element(int index);
-	int get_size();
-	smart_array& operator = (smart_array& a);
+	smart_array& operator = (const smart_array& other);
 private:
 	int size;
 	int* arr;
 	int i;
 
 };
-
-int smart_array::get_size()
-{
-	return size;
-}
 
 smart_array::smart_array(int a)
 {
@@ -60,16 +55,29 @@ int smart_array::get_element(int index)
 	}
 }
 
-smart_array& smart_array::operator = (smart_array& a)
+smart_array& smart_array::operator = (const smart_array& other)
 {
 	delete[] arr;
-	size = a.get_size();
+	size = other.size;
+	i = 0;
 	arr = new int[size];
 	for (int i = 0; i < size; ++i)
 	{
-		arr[i] = a.get_element(i);
+		arr[i] = other.arr[i];
 	}
 	return *this;
+
+}
+
+smart_array::smart_array(const smart_array &other)
+{
+	size = other.size;
+	i = 0;
+	arr = new int[size];
+	for (int i = 0; i < size; ++i)
+	{
+		arr[i] = other.arr[i];
+	}
 }
 
 int main()
@@ -85,9 +93,9 @@ int main()
 		new_array.add_element(34);
 
 		arr = new_array;
-
 	}
 	catch (const std::exception& ex) {
 		std::cout << ex.what() << std::endl;
 	}
+	return 0;
 }
